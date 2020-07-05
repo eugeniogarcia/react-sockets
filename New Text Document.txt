@@ -1,0 +1,4 @@
+```ps
+npm init next-app react-socket
+```
+
