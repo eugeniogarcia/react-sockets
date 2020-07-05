@@ -1,30 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Instalacion
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+```ps
+npm init next-app react-socket
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```ps
+npm i express socket.io
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+# Servidor
 
-## Learn More
+Vamos a arrancar el servidor con powershell en background. El directorio de trabajo para los jobs que se ejecutan en background es el `home` del usuario, por esto vamos a especificar la ruta absoluta donde podremos encontrar nuestro servidor. Guardamos en una variable la ruta actual:
 
-To learn more about Next.js, take a look at the following resources:
+```ps
+$r=Get-Location
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Arrancamos el job. Le pasamos como `-InputObjec` nuestra ruta. Lo que informemos en este argumento estara disponible en la variable de entorno `input`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```ps
+Start-Job  -name SocketServer -ScriptBlock {node $input\servidor.js} -InputObjec $r
+```
 
-## Deploy on Vercel
+En este caso le hemos puesto un nombre al job. Nos podremos referir a él con este nombre, o con el id. Veamos la salida del job:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ps
+Receive-Job -name SocketServer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Escuchando en el puerto 4001
+```
+
+Para para el job:
+
+```ps
+stop-Job -name SocketServer
+```
